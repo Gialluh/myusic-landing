@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MYUSIC — Your Music, Your Story</title>
+  <meta name="description"
+    content="MYUSIC is a social music app where music moves between people who share the same rhythm. Quality over quantity. No background noise, just real connections." />
+  <meta property="og:title" content="MYUSIC — Your Music, Your Story" />
+  <meta property="og:description"
+    content="A space where music moves between people who share the same rhythm. Quality over quantity. No background noise, just real connections." />
+  <meta property="og:image" content="images/MYUSIC LOGO 1024X1024 - Copy.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MYUSIC — Your Music, Your Story" />
+  <meta name="twitter:description" content="A space where music moves between people who share the same rhythm." />
+  <meta name="twitter:image" content="images/MYUSIC LOGO 1024X1024 - Copy.png" />
+  <link rel="icon" type="image/png" href="images/MYUSIC LOGO 1024X1024 - Copy.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Inter:wght@400&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ========================================
+   RESET & BASE
+   ======================================== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      color: #FFFFFF;
+      background: #0A0A14;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ========================================
+   FILM GRAIN OVERLAY
+   ======================================== */
+    .grain::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+      animation: grainShift 0.5s steps(6) infinite;
+    }
+
+    @keyframes grainShift {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      10% {
+        transform: translate(-2%, -3%);
+      }
+
+      30% {
+        transform: translate(3%, 2%);
+      }
+
+      50% {
+        transform: translate(-1%, 4%);
+      }
+
+      70% {
+        transform: translate(2%, -2%);
+      }
+
+      90% {
+        transform: translate(-3%, 1%);
+      }
+    }
+
+    /* ========================================
+   SCROLL ANIMATIONS
+   ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* SVG draw-on animation */
+    .draw-on path,
+    .draw-on circle,
+    .draw-on ellipse,
+    .draw-on line {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .draw-on.visible path,
+    .draw-on.visible circle,
+    .draw-on.visible ellipse,
+    .draw-on.visible line {
+      stroke-dashoffset: 0;
+    }
+
+    /* ========================================
+   SECTION 1 — HERO
+   ======================================== */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0033FF;
+      overflow: hidden;
+      text-align: center;
+      padding: 2rem 2rem 6rem;
+    }
+
+    #hero .hero-logo {
+      width: clamp(180px, 30vw, 360px);
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 2;
+      filter: brightness(0) invert(1);
+    }
+
+    #hero h1 {
+      font-size: clamp(1.6rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 680px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.7;
+    }
+
+    .scroll-indicator span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow {
+      width: 2px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, #FFFFFF);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: 0.4;
+        transform: scaleY(0.7);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+    }
+
+    /* ========================================
+   SECTION 2 — COVER IMAGE
+   ======================================== */
+    #cover {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #cover img {
+      width: 100%;
+      height: auto;
+      display: block;
+      will-change: transform;
+    }
+
+    /* ========================================
+   SECTION 3 — MANIFESTO
+   ======================================== */
+    #manifesto {
+      position: relative;
+      background: #000000;
+      padding: clamp(6rem, 12vw, 14rem) clamp(2rem, 8vw, 10rem);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #manifesto .manifesto-text {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.3rem, 3.2vw, 2.8rem);
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+      max-width: 900px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .manifesto-highlight {
+      position: relative;
+      display: inline;
+      white-space: nowrap;
+    }
+
+    .manifesto-highlight svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 115%;
+      height: 200%;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* ========================================
+   SECTION 4 — POETIC SECTIONS
+   ======================================== */
+    #poetic-sections {
+      background: #0A0A14;
+    }
+
+    .poetic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+
+    .poetic:nth-child(even) .poetic-image {
+      order: 2;
+    }
+
+    .poetic:nth-child(even) .poetic-text {
+      order: 1;
+    }
+
+    .poetic-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poetic-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      will-change: transform;
+    }
+
+    .poetic-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(3rem, 6vw, 6rem);
+    }
+
+    .poetic-text h2 {
+      font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      color: #FFFFFF;
+      font-style: italic;
+    }
+
+    .poetic-text p {
+      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.55);
+      max-width: 420px;
+    }
+
+    .poetic-decoration {
+      margin-top: 2.5rem;
+    }
+
+    .poetic-decoration svg {
+      width: 50px;
+      height: 50px;
+      opacity: 0.4;
+    }
+
+    /* ========================================
+   HOW IT WORKS — CAROUSEL
+   ======================================== */
+    #how-it-works {
+      position: relative;
+      background: #0033FF;
+      padding: clamp(5rem, 10vw, 8rem) 0;
+      overflow: hidden;
+    }
+
+    #how-it-works .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 clamp(2rem, 5vw, 6rem) 2rem;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+
+    .carousel-track:active {
+      cursor: grabbing;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-card {
+      flex: 0 0 300px;
+      min-height: 380px;
+      background: rgba(10, 10, 20, 0.85);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s;
+    }
+
+    .carousel-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .carousel-card .card-number {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #EFD782;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .carousel-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .carousel-card p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.6);
+      flex: 1;
+    }
+
+    .carousel-progress {
+      margin-top: 2.5rem;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .carousel-progress-bar {
+      width: 120px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .carousel-progress-fill {
+      height: 100%;
+      width: 20%;
+      background: #EFD782;
+      border-radius: 2px;
+      transition: width 0.15s;
+    }
+
+    /* ========================================
+   SECTION 5 — VISUAL BREAK
+   ======================================== */
+    #visual-break {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #visual-break img {
+      width: 100%;
+      height: auto;
+      display: block;
+      will-change: transform;
+    }
+
+    /* ========================================
+   SECTION 6 — EARLY ACCESS
+   ======================================== */
+    #early-access {
+      position: relative;
+      background: #0033FF;
+      padding: clamp(6rem, 12vw, 12rem) 2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #early-access .ea-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #early-access h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    #early-access .ea-subtitle {
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      opacity: 0.8;
+      margin-bottom: 3rem;
+      line-height: 1.6;
+    }
+
+    #signup-form {
+      display: flex;
+      gap: 0;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    #signup-form input[type="email"] {
+      flex: 1;
+      padding: 1rem 1.4rem;
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    #signup-form input[type="email"]::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    #signup-form input[type="email"]:focus {
+      border-color: #EFD782;
+      box-shadow: 0 0 20px rgba(239, 215, 130, 0.3), inset 0 0 10px rgba(239, 215, 130, 0.05);
+    }
+
+    #signup-form button {
+      padding: 1rem 2rem;
+      background: #EFD782;
+      color: #0A0A14;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: 2px solid #EFD782;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    #signup-form button:hover {
+      background: #f5e49e;
+    }
+
+    #signup-form button:active {
+      transform: scale(0.97);
+    }
+
+    #confirmation-msg {
+      display: none;
+    }
+
+    #confirmation-msg.show {
+      display: block;
+    }
+
+    #confirmation-msg h3 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      margin-bottom: 0.5rem;
+    }
+
+    #confirmation-msg p {
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .ea-decoration-left {
+      position: absolute;
+      top: 15%;
+      left: 5%;
+      z-index: 2;
+      opacity: 0.35;
+    }
+
+    .ea-decoration-right {
+      position: absolute;
+      bottom: 15%;
+      right: 5%;
+      z-index: 2;
+      opacity: 0.35;
+    }
+
+    .ea-decoration-star {
+      position: absolute;
+      top: 25%;
+      right: 12%;
+      z-index: 2;
+      opacity: 0.25;
+    }
+
+    /* ========================================
+   SECTION 7 — FOOTER
+   ======================================== */
+    #footer {
+      background: #000000;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    #footer .footer-logo {
+      width: 100px;
+      margin: 0 auto 1.5rem;
+      opacity: 0.8;
+    }
+
+    #footer .footer-copyright {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 1.2rem;
+    }
+
+    #footer .footer-social a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      transition: border-color 0.3s, opacity 0.3s;
+      opacity: 0.5;
+    }
+
+    #footer .footer-social a:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      opacity: 0.9;
+    }
+
+    #footer .footer-social svg {
+      width: 18px;
+      height: 18px;
+      fill: #FFFFFF;
+    }
+
+    /* ========================================
+   RESPONSIVE — MOBILE
+   ======================================== */
+    @media (max-width: 768px) {
+      .poetic {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .poetic-image {
+        height: 50vh;
+        min-height: 300px;
+      }
+
+      .poetic:nth-child(even) .poetic-image {
+        order: 0;
+      }
+
+      .poetic:nth-child(even) .poetic-text {
+        order: 0;
+      }
+
+      .poetic-text {
+        padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+      }
+
+      .carousel-card {
+        flex: 0 0 85vw;
+        min-height: 340px;
+      }
+
+      #signup-form {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      #signup-form input[type="email"] {
+        border-right: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+      }
+
+      #signup-form input[type="email"]:focus {
+        border-right-color: #EFD782;
+      }
+
+      #signup-form button {
+        border-radius: 4px;
+        padding: 1rem;
+      }
+
+      .ea-decoration-left,
+      .ea-decoration-right,
+      .ea-decoration-star {
+        display: none;
+      }
+
+      #manifesto {
+        padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 3rem);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================
+     SECTION 1 — HERO
+     ============================================ -->
+  <section id="hero" class="grain">
+    <img src="images/logo.png" alt="MYUSIC Logo" class="hero-logo" />
+    <h1 class="reveal">No background noise,<br>just real connections.</h1>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ============================================
+     SECTION 2 — COVER IMAGE
+     ============================================ -->
+  <section id="cover">
+    <img src="images/Artboard 8_3.png" alt="Girl in red dress with hair flying against electric blue background"
+      class="parallax-img" />
+  </section>
+
+  <!-- ============================================
+     SECTION 3 — MANIFESTO
+     ============================================ -->
+  <section id="manifesto" class="grain">
+    <div class="manifesto-text reveal">
+      Myusic is a space where music moves between people who share the same rhythm. Quality over quantity. Tracks are
+      passed between like-minded individuals, without intermediaries. No background noise, just
+      <span class="manifesto-highlight">
+        real connections.
+        <!-- Hand-drawn wobbly circle -->
+        <svg class="draw-on" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="110" cy="40" rx="105" ry="35" stroke="#EFD782" stroke-width="2.5" stroke-linecap="round"
+            pathLength="1000" style="stroke-dasharray:1000;stroke-dashoffset:1000;" transform="rotate(-2 110 40)" />
+        </svg>
+      </span>
+    </div>
+  </section>
+
+  <!-- ============================================
+     SECTION 4 — POETIC SECTIONS
+     ============================================ -->
+  <section id="poetic-sections">
+
+    <!-- Poetic 1 -->
+    <div class="poetic">
+      <div class="poetic-image">
+        <img src="images/Artboard 24.png" alt="Close-up arms and torso, intimate and dark" loading="lazy"
+          class="parallax-img" />
+      </div>
+      <div class="poetic-text reveal">
+        <h2>I heard a song last night that made me want to call everyone I've ever loved.</h2>
+        <p>I didn't. But I shared it. And someone on the other side felt the exact same thing.</p>
+      </div>
+    </div>
+
+    <!-- Poetic 2 -->
+    <div class="poetic">
+      <div class="poetic-image">
+        <img src="images/Artboard 22.png" alt="Two pairs of hands reaching toward each other against blue background"
+          loading="lazy" class="parallax-img" />
+      </div>
+      <div class="poetic-text reveal">
+        <h2>Connection is not a Wi-Fi problem.</h2>
+        <p>It's a timing problem. You just have to be in the same place, at the same time, listening to the same thing.
+        </p>
+        <div class="poetic-decoration draw-on">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 2 L33 25 L56 28 L33 31 L30 54 L27 31 L4 28 L27 25 Z" stroke="#EFD782" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1000" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Poetic 3 -->
+    <div class="poetic">
+      <div class="poetic-image">
+        <img src="images/Artboard 1.png" alt="Guy standing in water wearing red against cinematic blue sky"
+          loading="lazy" class="parallax-img" />
+      </div>
+      <div class="poetic-text reveal">
+        <h2>The world is basically a room full of people all playing different songs at the same time.</h2>
+        <p>And somehow it sounds alright. Not good. But alright. And alright is underrated.</p>
+        <div class="poetic-decoration draw-on">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="24" stroke="#EFD782" stroke-width="2" stroke-linecap="round" fill="none"
+              pathLength="1000" transform="rotate(5 30 30)" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================
+     HOW IT WORKS — CAROUSEL
+     ============================================ -->
+  <section id="how-it-works" class="grain">
+    <p class="section-label reveal">How it works</p>
+    <div class="carousel-wrapper reveal">
+      <div class="carousel-track" id="carousel-track">
+
+        <div class="carousel-card">
+          <span class="card-number">01</span>
+          <h3>Drop</h3>
+          <p>Share one song per cycle. Wednesday to Sunday, Sunday to Wednesday. One choice, make it count.</p>
+        </div>
+
+        <div class="carousel-card">
+          <span class="card-number">02</span>
+          <h3>Sessions</h3>
+          <p>Someone shares a song. You reply with a song. A conversation starts — no words needed.</p>
+        </div>
+
+        <div class="carousel-card">
+          <span class="card-number">03</span>
+          <h3>Mood Requests</h3>
+          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with
+            music.</p>
+        </div>
+
+        <div class="carousel-card">
+          <span class="card-number">04</span>
+          <h3>Radar</h3>
+          <p>Discover music from people outside your circle. Public drops land here. New taste, new connections.</p>
+        </div>
+
+        <div class="carousel-card">
+          <span class="card-number">05</span>
+          <h3>Your Meusic</h3>
+          <p>Three songs that define you. Prompts that reveal your taste. Your profile is your music identity.</p>
+        </div>
+
+        <div class="carousel-card">
+          <span class="card-number">06</span>
+          <h3>Listen Later</h3>
+          <p>Save songs that catch your ear. 10 slots. 30 days. Then they're gone. Listen now or lose them.</p>
+        </div>
+
+      </div>
+      <div class="carousel-progress">
+        <div class="carousel-progress-bar">
+          <div class="carousel-progress-fill" id="carousel-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+     SECTION 5 — VISUAL BREAK
+     ============================================ -->
+  <section id="visual-break">
+    <img src="images/Artboard 28.png" alt="Male torso from behind with blue tint" loading="lazy" class="parallax-img" />
+  </section>
+
+  <!-- ============================================
+     SECTION 6 — EARLY ACCESS
+     ============================================ -->
+  <section id="early-access" class="grain">
+
+    <!-- Decorative SVGs -->
+    <div class="ea-decoration-left draw-on">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="35" stroke="#EFD782" stroke-width="2" stroke-linecap="round" fill="none"
+          pathLength="1000" transform="rotate(-3 40 40)" />
+        <circle cx="40" cy="40" r="20" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" fill="none"
+          pathLength="1000" transform="rotate(5 40 40)" />
+      </svg>
+    </div>
+
+    <div class="ea-decoration-star draw-on">
+      <svg width="50" height="50" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 2 L33 25 L56 28 L33 31 L30 54 L27 31 L4 28 L27 25 Z" stroke="#FFFFFF" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1000" />
+      </svg>
+    </div>
+
+    <div class="ea-decoration-right draw-on">
+      <svg width="70" height="40" viewBox="0 0 70 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 35 C 15 5, 35 5, 45 20 C 55 35, 65 10, 65 10" stroke="#EFD782" stroke-width="2"
+          stroke-linecap="round" fill="none" pathLength="1000" />
+      </svg>
+    </div>
+
+    <div class="ea-content reveal">
+      <h2>We're almost ready.</h2>
+      <p class="ea-subtitle">Leave your email. Be the first to know.</p>
+
+      <form id="signup-form" autocomplete="off">
+        <input type="email" id="email-input" name="email" placeholder="your@email.com" required
+          aria-label="Email address" />
+        <button type="submit" id="submit-btn">Join the Waitlist</button>
+      </form>
+
+      <div id="confirmation-msg">
+        <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+          style="margin:0 auto 1rem;">
+          <path d="M30 2 L33 25 L56 28 L33 31 L30 54 L27 31 L4 28 L27 25 Z" stroke="#EFD782" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        </svg>
+        <h3>You're in.</h3>
+        <p>We'll be in touch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+     SECTION 7 — FOOTER
+     ============================================ -->
+  <footer id="footer">
+    <img src="images/logo.png" alt="MYUSIC" class="footer-logo" style="mix-blend-mode: screen;" />
+    <p class="footer-copyright">&copy; 2026 MYUSIC</p>
+    <div class="footer-social">
+      <a href="#" aria-label="Follow MYUSIC on Instagram" target="_blank" rel="noopener">
+        <!-- Instagram icon -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.088 4.088 0 011.47.957c.453.453.79.902.957 1.47.163.46.35 1.26.403 2.43.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.403 2.43a4.088 4.088 0 01-.957 1.47 4.088 4.088 0 01-1.47.957c-.46.163-1.26.35-2.43.403-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.403a4.088 4.088 0 01-1.47-.957 4.088 4.088 0 01-.957-1.47c-.163-.46-.35-1.26-.403-2.43C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.054-1.17.24-1.97.403-2.43a4.088 4.088 0 01.957-1.47A4.088 4.088 0 015.063 2.293c.46-.163 1.26-.35 2.43-.403C8.759 1.832 9.139 1.82 12 1.82zM12 0C8.741 0 8.333.014 7.053.072 5.775.13 4.902.333 4.14.63a5.882 5.882 0 00-2.126 1.384A5.882 5.882 0 00.63 4.14C.333 4.902.13 5.775.072 7.053.014 8.333 0 8.741 0 12s.014 3.667.072 4.947c.058 1.278.261 2.15.558 2.913a5.882 5.882 0 001.384 2.126 5.882 5.882 0 002.126 1.384c.762.297 1.635.5 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.058 2.15-.261 2.913-.558a5.882 5.882 0 002.126-1.384 5.882 5.882 0 001.384-2.126c.297-.762.5-1.635.558-2.913.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.058-1.278-.261-2.15-.558-2.913a5.882 5.882 0 00-1.384-2.126A5.882 5.882 0 0019.86.63C19.098.333 18.225.13 16.947.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998zm6.406-10.845a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z" />
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    /* ========================================
+       INTERSECTION OBSERVER — REVEAL ON SCROLL
+       ======================================== */
+    (function () {
+      const reveals = document.querySelectorAll('.reveal, .draw-on');
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+
+            // Animate stroke-dashoffset for draw-on SVGs
+            if (entry.target.classList.contains('draw-on')) {
+              const paths = entry.target.querySelectorAll('path, circle, ellipse, line');
+              paths.forEach(function (p) {
+                p.style.strokeDashoffset = '0';
+              });
+            }
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -60px 0px'
+      });
+
+      reveals.forEach(function (el) {
+        observer.observe(el);
+      });
+
+      // Also observe the manifesto circle SVG inside .manifesto-highlight
+      const highlightSVGs = document.querySelectorAll('.manifesto-highlight .draw-on');
+      highlightSVGs.forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+
+    /* ========================================
+       PARALLAX EFFECT ON IMAGES
+       ======================================== */
+    (function () {
+      const parallaxImages = document.querySelectorAll('.parallax-img');
+
+      function updateParallax() {
+        const scrollY = window.pageYOffset;
+        const vh = window.innerHeight;
+
+        parallaxImages.forEach(function (img) {
+          const rect = img.getBoundingClientRect();
+          // Only apply effect when image is in viewport
+          if (rect.bottom > 0 && rect.top < vh) {
+            const centerOffset = (rect.top + rect.height / 2 - vh / 2) / vh;
+            const translate = centerOffset * -30; // subtle 30px max shift
+            img.style.transform = 'translateY(' + translate + 'px) scale(1.05)';
+          }
+        });
+
+        requestAnimationFrame(updateParallax);
+      }
+
+      // Only run parallax on desktop
+      if (window.innerWidth > 768) {
+        requestAnimationFrame(updateParallax);
+      }
+    })();
+
+    /* ========================================
+       EMAIL SIGNUP FORM
+       ======================================== */
+    (function () {
+      var form = document.getElementById('signup-form');
+      var confirmMsg = document.getElementById('confirmation-msg');
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = document.getElementById('email-input').value;
+          console.log('Early access signup:', email);
+
+          // Hide form, show confirmation
+          form.style.display = 'none';
+          confirmMsg.classList.add('show');
+        });
+      }
+    })();
+
+    /* ========================================
+       CAROUSEL — SCROLL PROGRESS & DRAG
+       ======================================== */
+    (function () {
+      var track = document.getElementById('carousel-track');
+      var fill = document.getElementById('carousel-progress-fill');
+      if (!track || !fill) return;
+
+      // Update progress bar on scroll
+      track.addEventListener('scroll', function () {
+        var scrollLeft = track.scrollLeft;
+        var maxScroll = track.scrollWidth - track.clientWidth;
+        var pct = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+        fill.style.width = Math.max(10, pct) + '%';
+      });
+
+      // Mouse drag to scroll
+      var isDown = false, startX, scrollLeft;
+      track.addEventListener('mousedown', function (e) {
+        isDown = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        track.style.cursor = 'grabbing';
+      });
+      track.addEventListener('mouseleave', function () { isDown = false; track.style.cursor = 'grab'; });
+      track.addEventListener('mouseup', function () { isDown = false; track.style.cursor = 'grab'; });
+      track.addEventListener('mousemove', function (e) {
+        if (!isDown) return;
+        e.preventDefault();
+        var x = e.pageX - track.offsetLeft;
+        var walk = (x - startX) * 1.5;
+        track.scrollLeft = scrollLeft - walk;
+      });
+    })();
+  </script>
+
+</body>
+
+</html>
