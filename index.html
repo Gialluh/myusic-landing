@@ -568,6 +568,29 @@
       opacity: 0.8;
     }
 
+    .form-consent {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.5;
+    }
+
+    .form-consent a {
+      color: #EFD782;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .form-consent a:hover {
+      color: #FFFFFF;
+    }
+
+    .form-error {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #FF6B6B;
+    }
+
     .ea-decoration-left {
       position: absolute;
       top: 15%;
@@ -894,6 +917,8 @@
           aria-label="Email address" />
         <button type="submit" id="submit-btn">Join the Waitlist</button>
       </form>
+      <p class="form-consent">By joining, you agree to our <a href="privacy.html">Privacy Policy</a>.</p>
+      <p class="form-error" id="form-error" style="display:none;"></p>
 
       <div id="confirmation-msg">
         <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -912,7 +937,7 @@
      ============================================ -->
   <footer id="footer">
     <img src="images/logo.png" alt="MYUSIC" class="footer-logo" style="mix-blend-mode: screen;" />
-    <p class="footer-copyright">&copy; 2026 MYUSIC</p>
+    <p class="footer-copyright">&copy; 2026 MYUSIC &nbsp;&middot;&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35);text-decoration:underline;text-underline-offset:2px;transition:color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Privacy Policy</a></p>
     <div class="footer-social">
       <a href="#" aria-label="Follow MYUSIC on Instagram" target="_blank" rel="noopener">
         <!-- Instagram icon -->
@@ -995,16 +1020,51 @@
     (function () {
       var form = document.getElementById('signup-form');
       var confirmMsg = document.getElementById('confirmation-msg');
+      var submitBtn = document.getElementById('submit-btn');
+      var formError = document.getElementById('form-error');
+      var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxiaLQan3KIf0i6zk510MpVV3juOW1TH_KWe-x5p8-AnhnSenusSXGq7egxM7V-IcU/exec';
 
       if (form) {
         form.addEventListener('submit', function (e) {
           e.preventDefault();
-          var email = document.getElementById('email-input').value;
-          console.log('Early access signup:', email);
+          var email = document.getElementById('email-input').value.trim();
 
-          // Hide form, show confirmation
-          form.style.display = 'none';
-          confirmMsg.classList.add('show');
+          // Basic email validation
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            formError.textContent = 'Please enter a valid email address.';
+            formError.style.display = 'block';
+            return;
+          }
+
+          // Loading state
+          formError.style.display = 'none';
+          submitBtn.disabled = true;
+          var originalText = submitBtn.textContent;
+          submitBtn.textContent = '...';
+          submitBtn.style.opacity = '0.6';
+
+          fetch(ENDPOINT, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+          })
+          .then(function () {
+            // no-cors returns opaque response — assume success
+            console.log('Early access signup:', email);
+            form.style.display = 'none';
+            var consent = document.querySelector('.form-consent');
+            if (consent) consent.style.display = 'none';
+            if (formError) formError.style.display = 'none';
+            confirmMsg.classList.add('show');
+          })
+          .catch(function () {
+            formError.textContent = 'Something went wrong. Try again.';
+            formError.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            submitBtn.style.opacity = '1';
+          });
         });
       }
     })();
