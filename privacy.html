@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — MYUSIC</title>
-  <meta name="description" content="MYUSIC Privacy Policy — how we handle your data." />
+  <meta name="description" content="MYUSIC Privacy Policy — how we handle your data on the website and app." />
   <link rel="icon" type="image/png" href="images/MYUSIC LOGO 1024X1024 - Copy.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -108,10 +108,28 @@
       color: #FFFFFF;
     }
 
+    .privacy-content h3 {
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+    }
+
     .privacy-content p {
       font-size: 0.95rem;
       color: rgba(255, 255, 255, 0.7);
       margin-bottom: 1rem;
+    }
+
+    .privacy-content ul {
+      margin: 0 0 1rem 1.2rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .privacy-content ul li {
+      margin-bottom: 0.4rem;
     }
 
     /* Footer */
@@ -142,40 +160,109 @@
     <a href="index.html" style="text-decoration:none;">
       <img src="images/logo.png" alt="MYUSIC" class="logo" />
     </a>
-    <a href="index.html" class="back-link">← Back to home</a>
+    <a href="index.html" class="back-link">&larr; Back to home</a>
   </header>
 
   <main class="privacy-content">
     <h1>Privacy Policy</h1>
     <p class="last-updated">Last updated: March 2026</p>
 
+    <!-- 1 -->
     <h2>Who we are</h2>
-    <p>MYUSIC is a social music platform. This policy explains how we handle your data on our website myusic.app.</p>
+    <p>MYUSIC is a social music platform where people share songs and connect through music. It is operated by Gianluca Ausili / the MYUSIC team. Our website is <a href="https://myusic.app">myusic.app</a>.</p>
+    <p>This policy covers both the myusic.app website and the MYUSIC mobile app. We wrote it in plain language because we think you deserve to actually understand what happens with your data.</p>
 
+    <!-- 2 -->
     <h2>What we collect</h2>
-    <p>When you join our waitlist, we collect your email address. That's it. We don't collect cookies, tracking data, or any other personal information on this website.</p>
 
+    <h3>Account information</h3>
+    <p>When you create an account we collect your email address, name, username, and profile photo (either uploaded by you or pulled from your Google profile if you sign in with Google). You can also add a short bio. Authentication is handled securely through Firebase Auth.</p>
+
+    <h3>Phone number (optional)</h3>
+    <p>If you choose to add your phone number, we store it to help your friends find you on MYUSIC. This is entirely optional — the app works fine without it. Phone numbers are stored on Firebase Firestore.</p>
+
+    <h3>Contacts (optional)</h3>
+    <p>If you grant permission, we access your device contacts to find friends who are already on MYUSIC. Contact matching happens on your device — we do <strong>not</strong> upload your full contact list to our servers. You can deny this permission at any time without losing any app functionality.</p>
+
+    <h3>Music activity</h3>
+    <p>Everything you do musically on MYUSIC is stored so the app can work: songs you share (drops), likes, comments, session replies, mood requests, your Meusic profile (Me in 3, prompt cards), and Listen Later saves. All of this is stored on Firebase Firestore.</p>
+
+    <h3>Push notification tokens</h3>
+    <p>We store your device push token so we can send you notifications about likes, comments, new followers, and cycle reminders. You can disable notifications at any time in your device settings.</p>
+
+    <h3>Analytics</h3>
+    <p>We use PostHog for anonymous usage analytics to understand how people use the app and to improve the experience. This includes general usage patterns but <strong>not</strong> personal content or private messages.</p>
+
+    <h3>Waitlist email</h3>
+    <p>If you join our waitlist on myusic.app, we collect your email address to notify you about launch updates. This is stored in a private Google Sheet accessible only to the MYUSIC team.</p>
+
+    <!-- 3 -->
     <h2>Why we collect it</h2>
-    <p>To notify you when MYUSIC launches and to send occasional updates about the app. Nothing else.</p>
+    <ul>
+      <li>To provide the MYUSIC service: sharing music, connecting with friends, discovering new music</li>
+      <li>To send you relevant notifications about activity on your posts</li>
+      <li>To help you find friends who are already on the platform</li>
+      <li>To improve the app experience through anonymous analytics</li>
+      <li>To contact you about MYUSIC updates (waitlist only)</li>
+    </ul>
+    <p>That's it. We don't use your data for advertising, profiling, or anything you wouldn't expect.</p>
 
+    <!-- 4 -->
+    <h2>Third-party services we use</h2>
+    <ul>
+      <li><strong>Firebase (Google)</strong> — authentication, database, file storage. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a></li>
+      <li><strong>PostHog</strong> — anonymous analytics. <a href="https://posthog.com/privacy" target="_blank" rel="noopener">PostHog's privacy policy</a></li>
+      <li><strong>Spotify API</strong> — for song metadata and external links. We do <strong>not</strong> access your Spotify account or listening history.</li>
+      <li><strong>SoundCloud API</strong> — for song streaming. We do <strong>not</strong> access your SoundCloud account.</li>
+      <li><strong>iTunes / Apple Music API</strong> — for song previews and metadata.</li>
+      <li><strong>Expo Push Notifications</strong> — for delivering push notifications to your device.</li>
+    </ul>
+
+    <!-- 5 -->
     <h2>Where your data is stored</h2>
-    <p>Your email is stored securely in a private Google Sheet accessible only to the MYUSIC team.</p>
+    <p>All data is stored on Firebase servers (Google Cloud) in secure, encrypted infrastructure. Waitlist emails are stored in a private Google Sheet. We do not store data on personal devices or unencrypted servers.</p>
 
+    <!-- 6 -->
     <h2>Who sees your data</h2>
-    <p>Only the MYUSIC founding team. We never sell, share, or give your email to anyone else.</p>
+    <p>Your public profile — username, photo, bio, drops, and Meusic — is visible to other MYUSIC users. That's the point of the platform.</p>
+    <p>Your email, phone number, and account settings are private and visible only to you and the MYUSIC team.</p>
+    <p>We <strong>never</strong> sell, rent, or share your personal data with advertisers or third parties. We may share data only if required by law.</p>
 
-    <h2>Your rights</h2>
-    <p>You can ask us to delete your email at any time by contacting us at <a href="mailto:hello@myusic.app">hello@myusic.app</a>.</p>
-    <p>Under GDPR, you have the right to access, correct, or delete your personal data.</p>
+    <!-- 7 -->
+    <h2>Your rights (GDPR)</h2>
+    <ul>
+      <li><strong>Access:</strong> you can request a copy of your data at any time.</li>
+      <li><strong>Correction:</strong> you can update your profile information at any time in the app.</li>
+      <li><strong>Deletion:</strong> you can delete your account and all associated data. Contact us at <a href="mailto:hello@myusic.app">hello@myusic.app</a>.</li>
+      <li><strong>Portability:</strong> you can request your data in a readable format.</li>
+      <li><strong>Withdraw consent:</strong> you can revoke permissions (contacts, notifications) at any time through your device settings.</li>
+    </ul>
 
+    <!-- 8 -->
+    <h2>Data retention</h2>
+    <ul>
+      <li>Your data is kept as long as your account is active.</li>
+      <li>If you delete your account, we remove your personal data within 30 days.</li>
+      <li>Waitlist emails are kept until MYUSIC launches, then deleted unless you create an account.</li>
+      <li>Listen Later items expire automatically after 30 days.</li>
+      <li>Feed posts cycle every Wednesday and Sunday but remain on your profile.</li>
+    </ul>
+
+    <!-- 9 -->
+    <h2>Children</h2>
+    <p>MYUSIC is not intended for children under 13. We do not knowingly collect data from children under 13. If you believe a child under 13 has provided us with personal data, please contact us and we will delete it.</p>
+
+    <!-- 10 -->
     <h2>Cookies</h2>
-    <p>This website does not use cookies or tracking technologies.</p>
+    <p>The myusic.app website does not use cookies or tracking technologies. The MYUSIC app does not use cookies.</p>
 
-    <h2>Changes</h2>
-    <p>If we update this policy, we'll post the new version here with an updated date.</p>
+    <!-- 11 -->
+    <h2>Changes to this policy</h2>
+    <p>If we make significant changes, we will notify users through the app or by email. The latest version is always available at <a href="https://myusic.app/privacy.html">myusic.app/privacy.html</a>.</p>
 
-    <h2>Contact</h2>
-    <p>For any privacy questions: <a href="mailto:hello@myusic.app">hello@myusic.app</a></p>
+    <!-- 12 -->
+    <h2>Contact us</h2>
+    <p>For any privacy questions or data requests: <a href="mailto:hello@myusic.app">hello@myusic.app</a></p>
   </main>
 
   <footer class="privacy-footer">
