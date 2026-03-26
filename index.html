@@ -135,7 +135,7 @@
     .draw-on line {
       stroke-dasharray: 1000;
       stroke-dashoffset: 1000;
-      transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: stroke-dashoffset 1.5s ease-in-out;
     }
 
     .draw-on.visible path,
@@ -143,6 +143,84 @@
     .draw-on.visible ellipse,
     .draw-on.visible line {
       stroke-dashoffset: 0;
+    }
+
+    /* ========================================
+   KEN BURNS — PERPETUAL ZOOM
+   ======================================== */
+    @keyframes kenBurns {
+      0% { transform: scale(1.0); }
+      100% { transform: scale(1.05); }
+    }
+
+    .ken-burns {
+      animation: kenBurns 20s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    /* ========================================
+   MANIFESTO LINE-BY-LINE REVEAL
+   ======================================== */
+    .manifesto-line {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    .manifesto-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========================================
+   POETIC TEXT STAGGER
+   ======================================== */
+    .poetic-text h2 {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .poetic-text p {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+    }
+
+    .poetic-text.visible h2,
+    .poetic-text.visible p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .poetic-text.visible p {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* ========================================
+   CRT GLITCH — EARLY ACCESS HEADLINE
+   ======================================== */
+    @keyframes crtGlitch {
+      0%, 96%, 100% {
+        transform: translate(0, 0);
+        text-shadow: none;
+      }
+      97% {
+        transform: translate(-2px, 0);
+        text-shadow: 2px 0 #ff0040, -2px 0 #0040ff;
+      }
+      98% {
+        transform: translate(2px, 0);
+        text-shadow: -2px 0 #ff0040, 2px 0 #0040ff;
+      }
+      99% {
+        transform: translate(-1px, 0);
+        text-shadow: 1px 0 #ff0040, -1px 0 #0040ff;
+      }
+    }
+
+    .glitch-text {
+      animation: crtGlitch 5s linear infinite;
     }
 
     /* ========================================
@@ -329,12 +407,17 @@
     .poetic-text p {
       font-size: clamp(0.95rem, 1.3vw, 1.15rem);
       line-height: 1.7;
-      color: rgba(255, 255, 255, 0.55);
       max-width: 420px;
     }
 
     .poetic-decoration {
       margin-top: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.8s ease-out 0.6s;
+    }
+
+    .poetic-text.visible .poetic-decoration {
+      opacity: 1;
     }
 
     .poetic-decoration svg {
@@ -368,25 +451,24 @@
     .carousel-wrapper {
       position: relative;
       z-index: 2;
+      overflow: hidden;
     }
 
     .carousel-track {
       display: flex;
       gap: 1.5rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
       padding: 0 clamp(2rem, 5vw, 6rem) 2rem;
-      scrollbar-width: none;
-      cursor: grab;
+      width: max-content;
+      animation: carouselScroll 40s linear infinite;
     }
 
-    .carousel-track:active {
-      cursor: grabbing;
+    .carousel-wrapper:hover .carousel-track {
+      animation-play-state: paused;
     }
 
-    .carousel-track::-webkit-scrollbar {
-      display: none;
+    @keyframes carouselScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     .carousel-card {
@@ -395,7 +477,6 @@
       background: rgba(10, 10, 20, 0.85);
       border-radius: 16px;
       padding: 2.5rem 2rem;
-      scroll-snap-align: start;
       display: flex;
       flex-direction: column;
       transition: transform 0.3s;
@@ -425,30 +506,6 @@
       line-height: 1.65;
       color: rgba(255, 255, 255, 0.6);
       flex: 1;
-    }
-
-    .carousel-progress {
-      margin-top: 2.5rem;
-      display: flex;
-      justify-content: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .carousel-progress-bar {
-      width: 120px;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .carousel-progress-fill {
-      height: 100%;
-      width: 20%;
-      background: #EFD782;
-      border-radius: 2px;
-      transition: width 0.15s;
     }
 
     /* ========================================
@@ -686,7 +743,7 @@
       }
 
       .carousel-card {
-        flex: 0 0 85vw;
+        flex: 0 0 280px;
         min-height: 340px;
       }
 
@@ -719,6 +776,36 @@
         padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 3rem);
       }
     }
+
+    /* ========================================
+   ACCESSIBILITY — REDUCED MOTION
+   ======================================== */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .ken-burns {
+        animation: none !important;
+      }
+
+      .reveal,
+      .manifesto-line,
+      .poetic-text h2,
+      .poetic-text p {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .glitch-text {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -741,23 +828,25 @@
      ============================================ -->
   <section id="cover">
     <img src="images/Artboard 8_3.png" alt="Girl in red dress with hair flying against electric blue background"
-      class="parallax-img" />
+      class="ken-burns" />
   </section>
 
   <!-- ============================================
      SECTION 3 — MANIFESTO
      ============================================ -->
   <section id="manifesto" class="grain">
-    <div class="manifesto-text reveal">
-      Myusic is a space where music moves between people who share the same rhythm. Quality over quantity. Tracks are
-      passed between like-minded individuals, without intermediaries. No background noise, just
-      <span class="manifesto-highlight">
-        real connections.
-        <!-- Hand-drawn wobbly circle -->
-        <svg class="draw-on" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="110" cy="40" rx="105" ry="35" stroke="#EFD782" stroke-width="2.5" stroke-linecap="round"
-            pathLength="1000" style="stroke-dasharray:1000;stroke-dashoffset:1000;" transform="rotate(-2 110 40)" />
-        </svg>
+    <div class="manifesto-text" id="manifesto-text">
+      <span class="manifesto-line">Myusic is a space where music moves between people who share the same rhythm.</span>
+      <span class="manifesto-line">Quality over quantity.</span>
+      <span class="manifesto-line">Tracks are passed between like-minded individuals, without intermediaries.</span>
+      <span class="manifesto-line">No background noise, just
+        <span class="manifesto-highlight">
+          real connections.
+          <svg class="draw-on" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="110" cy="40" rx="105" ry="35" stroke="#EFD782" stroke-width="2.5" stroke-linecap="round"
+              pathLength="1000" style="stroke-dasharray:1000;stroke-dashoffset:1000;" transform="rotate(-2 110 40)" />
+          </svg>
+        </span>
       </span>
     </div>
   </section>
@@ -771,9 +860,9 @@
     <div class="poetic">
       <div class="poetic-image">
         <img src="images/Artboard 24.png" alt="Close-up arms and torso, intimate and dark" loading="lazy"
-          class="parallax-img" />
+          class="ken-burns" />
       </div>
-      <div class="poetic-text reveal">
+      <div class="poetic-text">
         <h2>I heard a song last night that made me want to call everyone I've ever loved.</h2>
         <p>I didn't. But I shared it. And someone on the other side felt the exact same thing.</p>
       </div>
@@ -783,12 +872,11 @@
     <div class="poetic">
       <div class="poetic-image">
         <img src="images/Artboard 22.png" alt="Two pairs of hands reaching toward each other against blue background"
-          loading="lazy" class="parallax-img" />
+          loading="lazy" class="ken-burns" />
       </div>
-      <div class="poetic-text reveal">
+      <div class="poetic-text">
         <h2>Connection is not a Wi-Fi problem.</h2>
-        <p>It's a timing problem. You just have to be in the same place, at the same time, listening to the same thing.
-        </p>
+        <p>It's a timing problem. You just have to be in the same place, at the same time, listening to the same thing.</p>
         <div class="poetic-decoration draw-on">
           <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M30 2 L33 25 L56 28 L33 31 L30 54 L27 31 L4 28 L27 25 Z" stroke="#EFD782" stroke-width="2"
@@ -802,9 +890,9 @@
     <div class="poetic">
       <div class="poetic-image">
         <img src="images/Artboard 1.png" alt="Guy standing in water wearing red against cinematic blue sky"
-          loading="lazy" class="parallax-img" />
+          loading="lazy" class="ken-burns" />
       </div>
-      <div class="poetic-text reveal">
+      <div class="poetic-text">
         <h2>The world is basically a room full of people all playing different songs at the same time.</h2>
         <p>And somehow it sounds alright. Not good. But alright. And alright is underrated.</p>
         <div class="poetic-decoration draw-on">
@@ -831,43 +919,64 @@
           <h3>Drop</h3>
           <p>Share one song per cycle. Wednesday to Sunday, Sunday to Wednesday. One choice, make it count.</p>
         </div>
-
         <div class="carousel-card">
           <span class="card-number">02</span>
           <h3>Sessions</h3>
           <p>Someone shares a song. You reply with a song. A conversation starts — no words needed.</p>
         </div>
-
         <div class="carousel-card">
           <span class="card-number">03</span>
           <h3>Mood Requests</h3>
-          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with
-            music.</p>
+          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with music.</p>
         </div>
-
         <div class="carousel-card">
           <span class="card-number">04</span>
           <h3>Radar</h3>
           <p>Discover music from people outside your circle. Public drops land here. New taste, new connections.</p>
         </div>
-
         <div class="carousel-card">
           <span class="card-number">05</span>
           <h3>Your Meusic</h3>
           <p>Three songs that define you. Prompts that reveal your taste. Your profile is your music identity.</p>
         </div>
-
         <div class="carousel-card">
           <span class="card-number">06</span>
           <h3>Listen Later</h3>
           <p>Save songs that catch your ear. 10 slots. 30 days. Then they're gone. Listen now or lose them.</p>
         </div>
 
-      </div>
-      <div class="carousel-progress">
-        <div class="carousel-progress-bar">
-          <div class="carousel-progress-fill" id="carousel-progress-fill"></div>
+        <!-- Cloned cards for seamless infinite loop -->
+        <div class="carousel-card" aria-hidden="true">
+          <span class="card-number">01</span>
+          <h3>Drop</h3>
+          <p>Share one song per cycle. Wednesday to Sunday, Sunday to Wednesday. One choice, make it count.</p>
         </div>
+        <div class="carousel-card" aria-hidden="true">
+          <span class="card-number">02</span>
+          <h3>Sessions</h3>
+          <p>Someone shares a song. You reply with a song. A conversation starts — no words needed.</p>
+        </div>
+        <div class="carousel-card" aria-hidden="true">
+          <span class="card-number">03</span>
+          <h3>Mood Requests</h3>
+          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with music.</p>
+        </div>
+        <div class="carousel-card" aria-hidden="true">
+          <span class="card-number">04</span>
+          <h3>Radar</h3>
+          <p>Discover music from people outside your circle. Public drops land here. New taste, new connections.</p>
+        </div>
+        <div class="carousel-card" aria-hidden="true">
+          <span class="card-number">05</span>
+          <h3>Your Meusic</h3>
+          <p>Three songs that define you. Prompts that reveal your taste. Your profile is your music identity.</p>
+        </div>
+        <div class="carousel-card" aria-hidden="true">
+          <span class="card-number">06</span>
+          <h3>Listen Later</h3>
+          <p>Save songs that catch your ear. 10 slots. 30 days. Then they're gone. Listen now or lose them.</p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -876,7 +985,7 @@
      SECTION 5 — VISUAL BREAK
      ============================================ -->
   <section id="visual-break">
-    <img src="images/Artboard 28.png" alt="Male torso from behind with blue tint" loading="lazy" class="parallax-img" />
+    <img src="images/Artboard 28.png" alt="Male torso from behind with blue tint" loading="lazy" class="ken-burns" />
   </section>
 
   <!-- ============================================
@@ -909,7 +1018,7 @@
     </div>
 
     <div class="ea-content reveal">
-      <h2>We're almost ready.</h2>
+      <h2 class="glitch-text">We're almost ready.</h2>
       <p class="ea-subtitle">Leave your email. Be the first to know.</p>
 
       <form id="signup-form" autocomplete="off">
@@ -954,64 +1063,100 @@
        INTERSECTION OBSERVER — REVEAL ON SCROLL
        ======================================== */
     (function () {
-      const reveals = document.querySelectorAll('.reveal, .draw-on');
-      const observer = new IntersectionObserver(function (entries) {
+      // Standard reveal elements
+      var reveals = document.querySelectorAll('.reveal, .draw-on');
+      var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-
-            // Animate stroke-dashoffset for draw-on SVGs
             if (entry.target.classList.contains('draw-on')) {
-              const paths = entry.target.querySelectorAll('path, circle, ellipse, line');
-              paths.forEach(function (p) {
-                p.style.strokeDashoffset = '0';
-              });
+              var paths = entry.target.querySelectorAll('path, circle, ellipse, line');
+              paths.forEach(function (p) { p.style.strokeDashoffset = '0'; });
             }
           }
         });
-      }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -60px 0px'
-      });
+      }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 
-      reveals.forEach(function (el) {
-        observer.observe(el);
-      });
+      reveals.forEach(function (el) { observer.observe(el); });
 
-      // Also observe the manifesto circle SVG inside .manifesto-highlight
-      const highlightSVGs = document.querySelectorAll('.manifesto-highlight .draw-on');
-      highlightSVGs.forEach(function (el) {
-        observer.observe(el);
-      });
+      // Manifesto highlight circle
+      var highlightSVGs = document.querySelectorAll('.manifesto-highlight .draw-on');
+      highlightSVGs.forEach(function (el) { observer.observe(el); });
     })();
 
     /* ========================================
-       PARALLAX EFFECT ON IMAGES
+       MANIFESTO — LINE-BY-LINE REVEAL
        ======================================== */
     (function () {
-      const parallaxImages = document.querySelectorAll('.parallax-img');
+      var section = document.getElementById('manifesto');
+      var lines = document.querySelectorAll('.manifesto-line');
+      if (!section || !lines.length) return;
 
-      function updateParallax() {
-        const scrollY = window.pageYOffset;
-        const vh = window.innerHeight;
-
-        parallaxImages.forEach(function (img) {
-          const rect = img.getBoundingClientRect();
-          // Only apply effect when image is in viewport
-          if (rect.bottom > 0 && rect.top < vh) {
-            const centerOffset = (rect.top + rect.height / 2 - vh / 2) / vh;
-            const translate = centerOffset * -30; // subtle 30px max shift
-            img.style.transform = 'translateY(' + translate + 'px) scale(1.05)';
+      var observed = false;
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !observed) {
+            observed = true;
+            lines.forEach(function (line, i) {
+              setTimeout(function () {
+                line.classList.add('visible');
+              }, i * 300);
+            });
+            // Trigger the SVG circle draw after all lines
+            setTimeout(function () {
+              var svg = section.querySelector('.draw-on');
+              if (svg) {
+                svg.classList.add('visible');
+                var paths = svg.querySelectorAll('path, circle, ellipse, line');
+                paths.forEach(function (p) { p.style.strokeDashoffset = '0'; });
+              }
+            }, lines.length * 300 + 500);
           }
         });
+      }, { threshold: 0.2 });
 
-        requestAnimationFrame(updateParallax);
+      obs.observe(section);
+    })();
+
+    /* ========================================
+       POETIC TEXT — STAGGER SLIDE-IN
+       ======================================== */
+    (function () {
+      var poeticTexts = document.querySelectorAll('.poetic-text');
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+
+      poeticTexts.forEach(function (el) { obs.observe(el); });
+    })();
+
+    /* ========================================
+       CAROUSEL — TOUCH PAUSE/RESUME
+       ======================================== */
+    (function () {
+      var wrapper = document.querySelector('.carousel-wrapper');
+      var track = document.getElementById('carousel-track');
+      if (!wrapper || !track) return;
+
+      var resumeTimer;
+      function pauseScroll() {
+        clearTimeout(resumeTimer);
+        track.style.animationPlayState = 'paused';
+      }
+      function scheduleResume() {
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function () {
+          track.style.animationPlayState = 'running';
+        }, 3000);
       }
 
-      // Only run parallax on desktop
-      if (window.innerWidth > 768) {
-        requestAnimationFrame(updateParallax);
-      }
+      // Touch events for mobile
+      wrapper.addEventListener('touchstart', pauseScroll, { passive: true });
+      wrapper.addEventListener('touchend', scheduleResume, { passive: true });
     })();
 
     /* ========================================
@@ -1029,14 +1174,12 @@
           e.preventDefault();
           var email = document.getElementById('email-input').value.trim();
 
-          // Basic email validation
           if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             formError.textContent = 'Please enter a valid email address.';
             formError.style.display = 'block';
             return;
           }
 
-          // Loading state
           formError.style.display = 'none';
           submitBtn.disabled = true;
           var originalText = submitBtn.textContent;
@@ -1050,7 +1193,6 @@
             body: JSON.stringify({ email: email })
           })
           .then(function () {
-            // no-cors returns opaque response — assume success
             console.log('Early access signup:', email);
             form.style.display = 'none';
             var consent = document.querySelector('.form-consent');
@@ -1067,41 +1209,6 @@
           });
         });
       }
-    })();
-
-    /* ========================================
-       CAROUSEL — SCROLL PROGRESS & DRAG
-       ======================================== */
-    (function () {
-      var track = document.getElementById('carousel-track');
-      var fill = document.getElementById('carousel-progress-fill');
-      if (!track || !fill) return;
-
-      // Update progress bar on scroll
-      track.addEventListener('scroll', function () {
-        var scrollLeft = track.scrollLeft;
-        var maxScroll = track.scrollWidth - track.clientWidth;
-        var pct = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
-        fill.style.width = Math.max(10, pct) + '%';
-      });
-
-      // Mouse drag to scroll
-      var isDown = false, startX, scrollLeft;
-      track.addEventListener('mousedown', function (e) {
-        isDown = true;
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-        track.style.cursor = 'grabbing';
-      });
-      track.addEventListener('mouseleave', function () { isDown = false; track.style.cursor = 'grab'; });
-      track.addEventListener('mouseup', function () { isDown = false; track.style.cursor = 'grab'; });
-      track.addEventListener('mousemove', function (e) {
-        if (!isDown) return;
-        e.preventDefault();
-        var x = e.pageX - track.offsetLeft;
-        var walk = (x - startX) * 1.5;
-        track.scrollLeft = scrollLeft - walk;
-      });
     })();
   </script>
 
