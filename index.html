@@ -451,24 +451,20 @@
     .carousel-wrapper {
       position: relative;
       z-index: 2;
-      overflow: hidden;
     }
 
     .carousel-track {
       display: flex;
       gap: 1.5rem;
       padding: 0 clamp(2rem, 5vw, 6rem) 2rem;
-      width: max-content;
-      animation: carouselScroll 40s linear infinite;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
 
-    .carousel-wrapper:hover .carousel-track {
-      animation-play-state: paused;
-    }
-
-    @keyframes carouselScroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    .carousel-track::-webkit-scrollbar {
+      display: none;
     }
 
     .carousel-card {
@@ -477,6 +473,7 @@
       background: rgba(10, 10, 20, 0.85);
       border-radius: 16px;
       padding: 2.5rem 2rem;
+      scroll-snap-align: start;
       display: flex;
       flex-direction: column;
       transition: transform 0.3s;
@@ -1135,28 +1132,84 @@
     })();
 
     /* ========================================
-       CAROUSEL — TOUCH PAUSE/RESUME
+       CAROUSEL — JS AUTO-SCROLL + TOUCH/HOVER
        ======================================== */
     (function () {
-      var wrapper = document.querySelector('.carousel-wrapper');
       var track = document.getElementById('carousel-track');
-      if (!wrapper || !track) return;
+      if (!track) return;
 
-      var resumeTimer;
-      function pauseScroll() {
-        clearTimeout(resumeTimer);
-        track.style.animationPlayState = 'paused';
+      var speed = 1; // px per tick
+      var interval = null;
+      var resumeTimer = null;
+      var paused = false;
+
+      // Calculate the halfway point (where cloned cards begin)
+      function getHalf() {
+        return (track.scrollWidth - track.clientWidth) / 2;
       }
-      function scheduleResume() {
+
+      function autoScroll() {
+        if (paused) return;
+        track.scrollLeft += speed;
+        // Seamless loop: when past halfway, jump back
+        if (track.scrollLeft >= getHalf()) {
+          track.scrollLeft = 0;
+        }
+      }
+
+      function startAuto() {
+        if (interval) return;
+        interval = setInterval(autoScroll, 20);
+      }
+
+      function stopAuto() {
+        clearInterval(interval);
+        interval = null;
+      }
+
+      function pauseAndScheduleResume() {
+        paused = true;
+        stopAuto();
         clearTimeout(resumeTimer);
         resumeTimer = setTimeout(function () {
-          track.style.animationPlayState = 'running';
+          paused = false;
+          startAuto();
         }, 3000);
       }
 
-      // Touch events for mobile
-      wrapper.addEventListener('touchstart', pauseScroll, { passive: true });
-      wrapper.addEventListener('touchend', scheduleResume, { passive: true });
+      // Desktop: hover pause
+      track.addEventListener('mouseenter', function () {
+        paused = true;
+        stopAuto();
+        clearTimeout(resumeTimer);
+      });
+      track.addEventListener('mouseleave', function () {
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function () {
+          paused = false;
+          startAuto();
+        }, 3000);
+      });
+
+      // Mobile: touch pause with native swipe
+      track.addEventListener('touchstart', function () {
+        paused = true;
+        stopAuto();
+        clearTimeout(resumeTimer);
+      }, { passive: true });
+      track.addEventListener('touchend', function () {
+        pauseAndScheduleResume();
+      }, { passive: true });
+
+      // Desktop: manual scroll (wheel) also pauses briefly
+      var scrollTimer;
+      track.addEventListener('scroll', function () {
+        if (!paused) return;
+        clearTimeout(scrollTimer);
+      }, { passive: true });
+
+      // Start auto-scroll
+      startAuto();
     })();
 
     /* ========================================
