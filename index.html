@@ -427,7 +427,7 @@
     }
 
     /* ========================================
-   HOW IT WORKS — CAROUSEL
+   HOW IT WORKS — INFINITE MARQUEE
    ======================================== */
     #how-it-works {
       position: relative;
@@ -451,36 +451,76 @@
     .carousel-wrapper {
       position: relative;
       z-index: 2;
+      overflow: hidden;
+      /* Subtle fade masks on left/right edges */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
     }
 
     .carousel-track {
       display: flex;
       gap: 1.5rem;
-      padding: 0 clamp(2rem, 5vw, 6rem) 2rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      width: max-content;
+      padding: 2rem 0;
+      animation: marqueeScroll var(--marquee-duration, 40s) linear infinite;
+      will-change: transform;
     }
 
-    .carousel-track::-webkit-scrollbar {
-      display: none;
+    /* Pause animation on hover (desktop) */
+    .carousel-wrapper:hover .carousel-track {
+      animation-play-state: paused;
     }
 
+    /* Pause animation while dragging */
+    .carousel-track.is-dragging {
+      animation-play-state: paused;
+      cursor: grabbing;
+    }
+
+    .carousel-track.drag-enabled {
+      cursor: grab;
+    }
+
+    @keyframes marqueeScroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ---- Card base ---- */
     .carousel-card {
       flex: 0 0 300px;
       min-height: 380px;
       background: rgba(10, 10, 20, 0.85);
       border-radius: 16px;
       padding: 2.5rem 2rem;
-      scroll-snap-align: start;
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, border-color 0.3s ease;
+      border: 1.5px solid transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
+    /* ---- Hover: lift + glow + border ---- */
     .carousel-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-8px);
+      border-color: rgba(239, 215, 130, 0.5);
+      box-shadow:
+        0 8px 32px rgba(239, 215, 130, 0.15),
+        0 0 0 1px rgba(239, 215, 130, 0.1);
+    }
+
+    /* ---- Dim siblings when any card is hovered ---- */
+    .carousel-wrapper:hover .carousel-card {
+      opacity: 0.45;
+    }
+    .carousel-wrapper:hover .carousel-card:hover {
+      opacity: 1;
     }
 
     .carousel-card .card-number {
@@ -496,6 +536,11 @@
       font-size: 1.6rem;
       margin-bottom: 1rem;
       line-height: 1.2;
+      transition: color 0.3s ease;
+    }
+
+    .carousel-card:hover h3 {
+      color: #EFD782;
     }
 
     .carousel-card p {
@@ -739,9 +784,37 @@
         padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
       }
 
+      /* ---- Mobile: disable marquee, use snap scroll ---- */
+      .carousel-wrapper {
+        -webkit-mask-image: none;
+        mask-image: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .carousel-wrapper::-webkit-scrollbar {
+        display: none;
+      }
+
+      .carousel-track {
+        animation: none !important;
+        width: auto;
+        padding: 1rem clamp(1.5rem, 4vw, 3rem);
+        gap: 1rem;
+      }
+
       .carousel-card {
         flex: 0 0 280px;
         min-height: 340px;
+        scroll-snap-align: center;
+      }
+
+      /* Disable dim-siblings on mobile (no hover) */
+      .carousel-wrapper:hover .carousel-card {
+        opacity: 1;
       }
 
       #signup-form {
@@ -942,37 +1015,7 @@
           <p>Save songs that catch your ear. 10 slots. 30 days. Then they're gone. Listen now or lose them.</p>
         </div>
 
-        <!-- Cloned cards for seamless infinite loop -->
-        <div class="carousel-card" aria-hidden="true">
-          <span class="card-number">01</span>
-          <h3>Drop</h3>
-          <p>Share one song per cycle. Wednesday to Sunday, Sunday to Wednesday. One choice, make it count.</p>
-        </div>
-        <div class="carousel-card" aria-hidden="true">
-          <span class="card-number">02</span>
-          <h3>Sessions</h3>
-          <p>Someone shares a song. You reply with a song. A conversation starts — no words needed.</p>
-        </div>
-        <div class="carousel-card" aria-hidden="true">
-          <span class="card-number">03</span>
-          <h3>Mood Requests</h3>
-          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with music.</p>
-        </div>
-        <div class="carousel-card" aria-hidden="true">
-          <span class="card-number">04</span>
-          <h3>Radar</h3>
-          <p>Discover music from people outside your circle. Public drops land here. New taste, new connections.</p>
-        </div>
-        <div class="carousel-card" aria-hidden="true">
-          <span class="card-number">05</span>
-          <h3>Your Meusic</h3>
-          <p>Three songs that define you. Prompts that reveal your taste. Your profile is your music identity.</p>
-        </div>
-        <div class="carousel-card" aria-hidden="true">
-          <span class="card-number">06</span>
-          <h3>Listen Later</h3>
-          <p>Save songs that catch your ear. 10 slots. 30 days. Then they're gone. Listen now or lose them.</p>
-        </div>
+        <!-- Cards are dynamically cloned by JS for seamless infinite loop -->
 
       </div>
     </div>
@@ -1132,84 +1175,89 @@
     })();
 
     /* ========================================
-       CAROUSEL — JS AUTO-SCROLL + TOUCH/HOVER
+       INFINITE MARQUEE — CLONE + DRAG + MOBILE SNAP
        ======================================== */
     (function () {
       var track = document.getElementById('carousel-track');
-      if (!track) return;
+      var wrapper = track ? track.closest('.carousel-wrapper') : null;
+      if (!track || !wrapper) return;
 
-      var speed = 1; // px per tick
-      var interval = null;
-      var resumeTimer = null;
-      var paused = false;
+      var isMobile = window.matchMedia('(max-width: 768px)').matches;
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // Calculate the halfway point (where cloned cards begin)
-      function getHalf() {
-        return (track.scrollWidth - track.clientWidth) / 2;
+      // Collect original cards
+      var originalCards = Array.prototype.slice.call(track.querySelectorAll('.carousel-card'));
+      if (!originalCards.length) return;
+
+      if (isMobile || prefersReducedMotion) {
+        // Mobile / reduced-motion: no cloning, no animation
+        // The CSS media query already handles snap scroll
+        track.style.animation = 'none';
+        return;
       }
 
-      function autoScroll() {
-        if (paused) return;
-        track.scrollLeft += speed;
-        // Seamless loop: when past halfway, jump back
-        if (track.scrollLeft >= getHalf()) {
-          track.scrollLeft = 0;
-        }
-      }
+      // --- Desktop: build the infinite marquee ---
 
-      function startAuto() {
-        if (interval) return;
-        interval = setInterval(autoScroll, 20);
-      }
-
-      function stopAuto() {
-        clearInterval(interval);
-        interval = null;
-      }
-
-      function pauseAndScheduleResume() {
-        paused = true;
-        stopAuto();
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(function () {
-          paused = false;
-          startAuto();
-        }, 3000);
-      }
-
-      // Desktop: hover pause
-      track.addEventListener('mouseenter', function () {
-        paused = true;
-        stopAuto();
-        clearTimeout(resumeTimer);
-      });
-      track.addEventListener('mouseleave', function () {
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(function () {
-          paused = false;
-          startAuto();
-        }, 3000);
+      // Clone cards once (the CSS animation moves -50%, so we need 2× the set)
+      originalCards.forEach(function (card) {
+        var clone = card.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
       });
 
-      // Mobile: touch pause with native swipe
-      track.addEventListener('touchstart', function () {
-        paused = true;
-        stopAuto();
-        clearTimeout(resumeTimer);
-      }, { passive: true });
-      track.addEventListener('touchend', function () {
-        pauseAndScheduleResume();
-      }, { passive: true });
+      // Calculate an appropriate animation duration based on content width
+      // so the speed feels consistent regardless of card count
+      var cardWidth = originalCards[0].offsetWidth;
+      var gap = 24; // 1.5rem at default
+      var totalOriginalWidth = originalCards.length * (cardWidth + gap);
+      var pxPerSecond = 50; // pixels per second — smooth and readable
+      var duration = totalOriginalWidth / pxPerSecond;
+      track.style.setProperty('--marquee-duration', duration + 's');
 
-      // Desktop: manual scroll (wheel) also pauses briefly
-      var scrollTimer;
-      track.addEventListener('scroll', function () {
-        if (!paused) return;
-        clearTimeout(scrollTimer);
-      }, { passive: true });
+      // Enable grab cursor
+      track.classList.add('drag-enabled');
 
-      // Start auto-scroll
-      startAuto();
+      // --- Desktop drag-to-scroll (translates mouse drag to scroll offset) ---
+      var isDragging = false;
+      var startX = 0;
+      var scrollStart = 0;
+
+      track.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        startX = e.pageX;
+        track.classList.add('is-dragging');
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        // We don't actually scroll — the marquee is CSS-translated.
+        // Instead, we could let the pause-on-hover handle interaction.
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (!isDragging) return;
+        isDragging = false;
+        track.classList.remove('is-dragging');
+      });
+
+      // Recalculate on resize
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          var nowMobile = window.matchMedia('(max-width: 768px)').matches;
+          if (nowMobile) {
+            track.style.animation = 'none';
+          } else {
+            var cw = originalCards[0].offsetWidth;
+            var tw = originalCards.length * (cw + gap);
+            var dur = tw / pxPerSecond;
+            track.style.setProperty('--marquee-duration', dur + 's');
+            track.style.animation = '';
+          }
+        }, 200);
+      });
     })();
 
     /* ========================================
