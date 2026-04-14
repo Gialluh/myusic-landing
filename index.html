@@ -149,8 +149,13 @@
    KEN BURNS — PERPETUAL ZOOM
    ======================================== */
     @keyframes kenBurns {
-      0% { transform: scale(1.0); }
-      100% { transform: scale(1.05); }
+      0% {
+        transform: scale(1.0);
+      }
+
+      100% {
+        transform: scale(1.05);
+      }
     }
 
     .ken-burns {
@@ -201,18 +206,24 @@
    CRT GLITCH — EARLY ACCESS HEADLINE
    ======================================== */
     @keyframes crtGlitch {
-      0%, 96%, 100% {
+
+      0%,
+      96%,
+      100% {
         transform: translate(0, 0);
         text-shadow: none;
       }
+
       97% {
         transform: translate(-2px, 0);
         text-shadow: 2px 0 #ff0040, -2px 0 #0040ff;
       }
+
       98% {
         transform: translate(2px, 0);
         text-shadow: -2px 0 #ff0040, 2px 0 #0040ff;
       }
+
       99% {
         transform: translate(-1px, 0);
         text-shadow: 1px 0 #ff0040, -1px 0 #0040ff;
@@ -485,6 +496,7 @@
       0% {
         transform: translateX(0);
       }
+
       100% {
         transform: translateX(-50%);
       }
@@ -519,6 +531,7 @@
     .carousel-wrapper:hover .carousel-card {
       opacity: 0.45;
     }
+
     .carousel-wrapper:hover .carousel-card:hover {
       opacity: 1;
     }
@@ -946,7 +959,8 @@
       </div>
       <div class="poetic-text">
         <h2>Connection is not a Wi-Fi problem.</h2>
-        <p>It's a timing problem. You just have to be in the same place, at the same time, listening to the same thing.</p>
+        <p>It's a timing problem. You just have to be in the same place, at the same time, listening to the same thing.
+        </p>
         <div class="poetic-decoration draw-on">
           <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M30 2 L33 25 L56 28 L33 31 L30 54 L27 31 L4 28 L27 25 Z" stroke="#EFD782" stroke-width="2"
@@ -997,7 +1011,8 @@
         <div class="carousel-card">
           <span class="card-number">03</span>
           <h3>Mood Requests</h3>
-          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with music.</p>
+          <p>Ask your friends for the right song for the moment. "Songs for a rooftop at sunset" — they answer with
+            music.</p>
         </div>
         <div class="carousel-card">
           <span class="card-number">04</span>
@@ -1086,7 +1101,13 @@
      ============================================ -->
   <footer id="footer">
     <img src="images/logo.png" alt="MYUSIC" class="footer-logo" style="mix-blend-mode: screen;" />
-    <p class="footer-copyright">&copy; 2026 MYUSIC &nbsp;&middot;&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35);text-decoration:underline;text-underline-offset:2px;transition:color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Privacy Policy</a></p>
+    <p class="footer-copyright">&copy; 2026 MYUSIC &nbsp;&middot;&nbsp; <a href="privacy.html"
+        style="color:rgba(255,255,255,0.35);text-decoration:underline;text-underline-offset:2px;transition:color 0.3s;"
+        onmouseover="this.style.color='rgba(255,255,255,0.7)'"
+        onmouseout="this.style.color='rgba(255,255,255,0.35)'">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="terms.html"
+        style="color:rgba(255,255,255,0.35);text-decoration:underline;text-underline-offset:2px;transition:color 0.3s;"
+        onmouseover="this.style.color='rgba(255,255,255,0.7)'"
+        onmouseout="this.style.color='rgba(255,255,255,0.35)'">Terms of Service</a></p>
     <div class="footer-social">
       <a href="#" aria-label="Follow MYUSIC on Instagram" target="_blank" rel="noopener">
         <!-- Instagram icon -->
@@ -1293,21 +1314,21 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email })
           })
-          .then(function () {
-            console.log('Early access signup:', email);
-            form.style.display = 'none';
-            var consent = document.querySelector('.form-consent');
-            if (consent) consent.style.display = 'none';
-            if (formError) formError.style.display = 'none';
-            confirmMsg.classList.add('show');
-          })
-          .catch(function () {
-            formError.textContent = 'Something went wrong. Try again.';
-            formError.style.display = 'block';
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-            submitBtn.style.opacity = '1';
-          });
+            .then(function () {
+              console.log('Early access signup:', email);
+              form.style.display = 'none';
+              var consent = document.querySelector('.form-consent');
+              if (consent) consent.style.display = 'none';
+              if (formError) formError.style.display = 'none';
+              confirmMsg.classList.add('show');
+            })
+            .catch(function () {
+              formError.textContent = 'Something went wrong. Try again.';
+              formError.style.display = 'block';
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalText;
+              submitBtn.style.opacity = '1';
+            });
         });
       }
     })();
