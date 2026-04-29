@@ -6,15 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MYUSIC — Your Music, Your Story</title>
   <meta name="description"
-    content="MYUSIC is a social music app where music moves between people who share the same rhythm. Quality over quantity. No background noise, just real connections." />
+    content="MYUSIC — Share one song, twice a week. Available on iOS and Android." />
   <meta property="og:title" content="MYUSIC — Your Music, Your Story" />
   <meta property="og:description"
-    content="A space where music moves between people who share the same rhythm. Quality over quantity. No background noise, just real connections." />
+    content="MYUSIC — Share one song, twice a week. Available on iOS and Android." />
   <meta property="og:image" content="images/MYUSIC LOGO 1024X1024 - Copy.png" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="MYUSIC — Your Music, Your Story" />
-  <meta name="twitter:description" content="A space where music moves between people who share the same rhythm." />
+  <meta name="twitter:description" content="MYUSIC — Share one song, twice a week. Available on iOS and Android." />
   <meta name="twitter:image" content="images/MYUSIC LOGO 1024X1024 - Copy.png" />
   <link rel="icon" type="image/png" href="images/MYUSIC LOGO 1024X1024 - Copy.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -606,8 +606,64 @@
     #early-access .ea-subtitle {
       font-size: clamp(1rem, 1.6vw, 1.2rem);
       opacity: 0.8;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       line-height: 1.6;
+    }
+
+    /* ========================================
+   STORE BADGES
+   ======================================== */
+    .store-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .store-badges a {
+      display: inline-block;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .store-badges a:hover {
+      transform: scale(1.05);
+    }
+
+    .store-badges a:active {
+      transform: scale(0.98);
+    }
+
+    .store-badges img {
+      height: 48px;
+      width: auto;
+    }
+
+    /* Hero badges — on blue background */
+    .store-badges--hero {
+      margin-top: 2.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .store-badges--hero img {
+      height: 48px;
+    }
+
+    /* Early access badges — slightly larger */
+    .store-badges--ea {
+      margin-bottom: 2.5rem;
+    }
+
+    .store-badges--ea img {
+      height: 56px;
+    }
+
+    .ea-mailing-label {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.02em;
     }
 
     #signup-form {
@@ -858,6 +914,20 @@
       #manifesto {
         padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 3rem);
       }
+
+      /* Store badges: stack vertically on mobile */
+      .store-badges {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .store-badges--hero img {
+        height: 44px;
+      }
+
+      .store-badges--ea img {
+        height: 50px;
+      }
     }
 
     /* ========================================
@@ -900,6 +970,14 @@
   <section id="hero" class="grain">
     <img src="images/logo.png" alt="MYUSIC Logo" class="hero-logo" />
     <h1 class="reveal">No background noise,<br>just real connections.</h1>
+    <div class="store-badges store-badges--hero reveal">
+      <a href="https://apps.apple.com/us/app/myusic-app/id6757954538" target="_blank" rel="noopener" aria-label="Download MYUSIC on the App Store">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.myusic.social" target="_blank" rel="noopener" aria-label="Get MYUSIC on Google Play">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+      </a>
+    </div>
     <div class="scroll-indicator">
       <span>Scroll</span>
       <div class="scroll-arrow"></div>
@@ -1073,13 +1151,24 @@
     </div>
 
     <div class="ea-content reveal">
-      <h2 class="glitch-text">We're almost ready.</h2>
-      <p class="ea-subtitle">Leave your email. Be the first to know.</p>
+      <h2 class="glitch-text">We're live.</h2>
+      <p class="ea-subtitle">Available now on iOS and Android.</p>
+
+      <div class="store-badges store-badges--ea">
+        <a href="https://apps.apple.com/us/app/myusic-app/id6757954538" target="_blank" rel="noopener" aria-label="Download MYUSIC on the App Store">
+          <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.myusic.social" target="_blank" rel="noopener" aria-label="Get MYUSIC on Google Play">
+          <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+        </a>
+      </div>
+
+      <p class="ea-mailing-label">Or join our mailing list for updates</p>
 
       <form id="signup-form" autocomplete="off">
         <input type="email" id="email-input" name="email" placeholder="your@email.com" required
           aria-label="Email address" />
-        <button type="submit" id="submit-btn">Join the Waitlist</button>
+        <button type="submit" id="submit-btn">Subscribe</button>
       </form>
       <p class="form-consent">By joining, you agree to our <a href="privacy.html">Privacy Policy</a>.</p>
       <p class="form-error" id="form-error" style="display:none;"></p>
