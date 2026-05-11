@@ -1,8 +1,14 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.myusic.social",
-    "sha256_cert_fingerprints": ["INSERT_SHA256_HERE"]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.myusic.social",
+      "sha256_cert_fingerprints": [
+        "31:A0:8E:F3:DD:A7:EB:A2:A2:3C:EE:A5:30:3A:DD:C2:61:54:58:DC:43:FB:2C:7F:E4:56:0A:D0:A3:E4:2B:E9"
+      ]
+    }
   }
-}]
+]
