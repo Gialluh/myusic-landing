@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "6757954538.com.myusic.social",
+        "paths": [ "/u/*" ]
+      }
+    ]
+  }
+}
